@@ -146,6 +146,20 @@ exp16 <- run_hector(ini_file = INI_FILE,
                     vars = HEAT_FLUX())
 exp16$scenario <- "Hector - NMAE w/ unc, incl. OHC \nTuning S, Alpha"
 
+exp17 <- run_hector(ini_file = INI_FILE,
+                    params = PARAMS,
+                    vals = c(0.53, 1.86, 1.26, 2.87, 1.33),
+                    yrs = 1750:2014,
+                    vars = HEAT_FLUX())
+exp17$scenario <- "Hector - MSE w/ unc, incl. OHC \nTuning S, Alpha"
+
+exp18 <- run_hector(ini_file = INI_FILE,
+                    params = PARAMS,
+                    vals = c(0.55, 1.81, 1.19, 2.31, 0.93),
+                    yrs = 1750:2014,
+                    vars = HEAT_FLUX())
+exp18$scenario <- "Hector - MSE w/o unc, incl. OHC \nTuning S, Alpha"
+
 # Calculating OHC RMSE
 all_exp <- list(default_data, 
              exp5_9A, exp5B, exp6B, exp8B, exp9B,  # NMSEs
@@ -154,9 +168,15 @@ all_exp <- list(default_data,
              exp12,                                # Add OHC, Mat Diff
              exp13,                                # Try MVSSE
              exp14A, exp14B,                       # Try remove S
-             exp15, exp16)                         # Try MAE/NMAE
+             exp15, exp16,                         # Try MAE/NMAE
+             exp17, exp18)                         # Try MSE w/ and w/o unc
 
 # TODO: clean up this output sorry
+
+# RMSE w/ unc
 sapply(all_exp, get_var_mse_unc, 
        obs_data = obs_data, var = "OHC", yrs = 1957:2014, mse_fn = mse_unc)
 
+# RMSE w/o unc
+sapply(all_exp, get_var_mse,
+       obs_data = obs_data, var = "OHC", yrs = 1957:2014, mse_fn = mse)

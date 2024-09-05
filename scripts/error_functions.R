@@ -328,6 +328,35 @@ mean_T_CO2_mse <- function(obs_data, hector_data) {
   return(mean(c(T_mse, CO2_mse)))
 }
 
+
+# mean_T_CO2_OHC_mse: function to find the mean of the temperature, CO2, 
+#                     and OHC MSEs between observed and predicted data
+#
+# args: 
+#   obs_data    - data frame of observed data formatted like Hector data frame
+#   hector_data - data frame outputted by Hector
+#
+# Returns: Average MAE between predicted and observed data
+mean_T_CO2_OHC_mse <- function(obs_data, hector_data) {
+  T_mse <- get_var_mse(obs_data = obs_data, 
+                       hector_data = hector_data, 
+                       var = GMST(), 
+                       yrs = 1850:2014,
+                       mse_fn = mse)
+  CO2_mse <- get_var_mse(obs_data = obs_data, 
+                         hector_data = hector_data, 
+                         var = CONCENTRATIONS_CO2(), 
+                         yrs = c(1750, 1850:2014),
+                         mse_fn = mse)  
+  OHC_mse <- get_var_mse(obs_data = obs_data,
+                         hector_data = hector_data,
+                         var = "OHC",
+                         yrs = 1957:2014,
+                         mse_fn = mse)
+  return(mean(c(T_mse, CO2_mse, OHC_mse)))
+}
+
+
 # mean_T_CO2_OHC_mse_unc: function to find the mean of the temperature, CO2, 
 #                         and OHC MSEs between observed and predicted data while
 #                         accounting for uncertainty in T and OHC
