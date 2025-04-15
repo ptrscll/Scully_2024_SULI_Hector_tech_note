@@ -52,7 +52,7 @@ for (scen_counter in 1:length(scenario_files)) {
   # Adding data from each of the main runs
   mse_data <- run_hector(ini_file = scenario_files[scen_counter],
                       params = PARAMS,
-                      vals = c(0.53, 1.86, 1.26, 2.87, 1.33),
+                      vals = c(0.55, 1.81, 1.19, 2.31, 0.928),
                       yrs = future_yrs,
                       vars = future_vars)
   mse_data$scenario <- paste("ssp", scenarios[scen_counter], sep="")
@@ -60,7 +60,7 @@ for (scen_counter in 1:length(scenario_files)) {
   
   mae_data <- run_hector(ini_file = scenario_files[scen_counter],
                       params = PARAMS,
-                      vals = c(0.57, 2.49, 1.06, 3.14, 1.08),
+                      vals = c(0.56, 1.76, 1.04, 2.35, 0.865),
                       yrs = future_yrs,
                       vars = future_vars)
   mae_data$scenario <- paste("ssp", scenarios[scen_counter], sep="")
@@ -72,7 +72,7 @@ for (scen_counter in 1:length(scenario_files)) {
                       yrs = future_yrs,
                       vars = future_vars)
   nmse_data$scenario <- paste("ssp", scenarios[scen_counter], sep="")
-  nmse_data$run <- "NMSE"
+  nmse_data$run <- "NMSE w/ unc"
   
   nmae_data <- run_hector(ini_file = scenario_files[scen_counter],
                           params = PARAMS,
@@ -80,7 +80,7 @@ for (scen_counter in 1:length(scenario_files)) {
                           yrs = future_yrs,
                           vars = future_vars)
   nmae_data$scenario <- paste("ssp", scenarios[scen_counter], sep="")
-  nmae_data$run <- "NMAE"
+  nmae_data$run <- "NMAE w/ unc"
   
   mvsse_data <- run_hector(ini_file = scenario_files[scen_counter],
                       params = PARAMS,
@@ -104,7 +104,7 @@ ggplot(data = future_results, aes(x = year, y = value, color = run)) +
   
   # Cleaning up plot
   scale_color_manual(name = "",
-                     values = c("orange", "#009E73",  "skyblue", "blue", "#CC79A7", "snow4")) + 
+                     values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7", "snow4")) + 
   theme(legend.text = element_text(size = 15), 
         legend.key.height = unit(2, "cm")) +
   ylab("Temperature Anomaly (\u00B0C)") +

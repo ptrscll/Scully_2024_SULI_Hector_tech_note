@@ -125,7 +125,7 @@ exp12 <- run_hector(ini_file = INI_FILE,
                     vals = c(0.65, 1.76, 1.04, 2.33, 0.438),
                     yrs = 1750:2014,
                     vars = VARS)
-exp12$scenario <- "Hector - NMSE"
+exp12$scenario <- "Hector - NMSE w/ unc"
 
 exp13 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
@@ -153,28 +153,65 @@ exp15 <- run_hector(ini_file = INI_FILE,
                     vals = c(0.57, 2.49, 1.06, 3.14, 1.08),
                     yrs = 1750:2014,
                     vars = VARS)
-exp15$scenario <- "Hector - MAE" 
+exp15$scenario <- "Hector - MAE w/ unc" 
 
 exp16 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
                     vals = c(0.59, 1.76, 1.04, 2.17, 0.411),
                     yrs = 1750:2014,
                     vars = VARS)
-exp16$scenario <- "Hector - NMAE"
+exp16$scenario <- "Hector - NMAE w/ unc"
 
 exp17 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
                     vals = c(0.53, 1.86, 1.26, 2.87, 1.33),
                     yrs = 1750:2014,
                     vars = VARS)
-exp17$scenario <- "Hector - MSE"
+exp17$scenario <- "Hector - MSE w/ unc"
+
+exp18 <- run_hector(ini_file = INI_FILE,
+                    params = PARAMS,
+                    vals = c(0.55, 1.81, 1.19, 2.31, 0.928),
+                    yrs = 1750:2014,
+                    vars = VARS)
+exp18$scenario <- "Hector - MSE"
+
+exp19 <- run_hector(ini_file = INI_FILE,
+                    params = PARAMS,
+                    vals = c(0.732, 1.76, 1.042, 2., 0.466),
+                    yrs = 1750:2014,
+                    vars = VARS)
+exp19$scenario <- "Hector - NMSE w/o unc"
+
+exp20 <- run_hector(ini_file = INI_FILE,
+                    params = PARAMS,
+                    vals = c(0.55, 1.81, 1.19, 2.31, 0.927),
+                    yrs = 1750:2014,
+                    vars = VARS)
+exp20$scenario <- "Hector - MSE smoothed"
+
+exp21 <- run_hector(ini_file = INI_FILE,
+                    params = PARAMS,
+                    vals = c(0.732, 1.76, 1.042, 2., 0.458),
+                    yrs = 1750:2014,
+                    vars = VARS)
+exp21$scenario <- "Hector - NMSE smoothed"
+
+exp22 <- run_hector(ini_file = INI_FILE,
+                    params = PARAMS,
+                    vals = c(0.56, 1.76, 1.04, 2.35, 0.865),
+                    yrs = 1750:2014,
+                    vars = VARS)
+exp22$scenario <- "Hector - MAE"
 
 
 # Coloring all unimportant runs grey
 grey_data <- rbind(exp5_9A, exp5B, exp6B, exp8B, exp9B,  # NMSEs
                    exp10A, exp10B,                       # Add S
-                   exp11A, exp11B,                               # Add alpha
-                   exp14A, exp14B)
+                   exp11A, exp11B,                       # Add alpha
+                   exp14A, exp14B,                       # Remove S
+                   exp15, exp17,                         # Unconverged runs
+                   exp19, exp20, exp21)                 # Smoothing-related runs
 grey_data$exp <- "Hector - Other Experiments"
 grey_data$metric <- "0"
 
@@ -182,11 +219,11 @@ grey_data$metric <- "0"
 default_data$metric <- "0"
 exp12$metric <- "SE"
 exp13$metric <- "Other"
-exp15$metric <- "AE"
 exp16$metric <- "AE"
-exp17$metric <- "SE"
-key_data <- rbind(default_data, exp12, exp17,     # MSE runs
-                  exp15, exp16,                   # MAE runs
+exp18$metric <- "SE"
+exp22$metric <- "AE"
+key_data <- rbind(default_data, exp12, exp18,     # MSE runs
+                  exp22, exp16,                   # MAE runs
                   exp13)             # MVSSE
 key_data$exp <- key_data$scenario
 
@@ -255,13 +292,13 @@ ggplot(data = co2_data, aes(x = year, y = value, color = exp)) +
   
   # Cleaning up plot
   scale_color_manual(name = expression(bold("Hector Runs")),
-                     values = c("orange", "#009E73", "skyblue", "blue", "#CC79A7",  "snow4", "black"),
+                     values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7", "snow4", "black"),
                      labels = c("Default", 
-                                expression("MAE (CO"[2]*" RMSE = 1.95)"),
-                                expression("MSE (CO"[2]*" RMSE = 1.89)"),
-                                expression("NMAE (CO"[2]*" RMSE = 2.06)"),
-                                expression("NMSE (CO"[2]*" RMSE = 2.93)"),
-                                "Other Runs",
+                                expression("MAE (CO"[2]*" RMSE = 1.97)"),
+                                expression("MSE (CO"[2]*" RMSE = 1.96)"),
+                                expression("MVSSE (CO"[2]*" RMSE = 1.84)"),
+                                expression("NMAE w/ unc (CO"[2]*" RMSE = 2.06)"),
+                                expression("NMSE w/ unc (CO"[2]*" RMSE = 2.93)"),
                                 "\n\n\nObservations\n\n\n")) + 
   scale_linetype(guide = F) +
   theme(legend.text = element_text(size = 18), 
@@ -292,8 +329,8 @@ ggplot(data = ohc_data, aes(x = year, y = value, color = exp)) +
   
   # Cleaning up plot
   scale_color_manual(name = "Experiments",
-                     values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7",  "snow4", "black")) + 
-  scale_linetype(guide = F) +
+                     values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7",  "snow4", "black")) +
+  scale_linetype(guide = "none") +
   theme(legend.text = element_text(size = 15), 
         legend.key.height = unit(2, "cm")) +
   ylab(expression('Global Ocean Heat Content Anomaly (ZJ)')) +
