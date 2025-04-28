@@ -3,9 +3,12 @@
 # Date: 10/12/24
 
 # Importing libraries
+remotes::install_github("jgcri/hector")
 library(hector)
 library(ggplot2)
-theme_set(theme_bw(base_size = 20))
+theme_set(theme_bw(base_size = 14))
+library(patchwork)
+library(ggpubr)
 
 # Setting up file paths
 COMP_DATA_DIR <- file.path(here::here(), "comparison_data")
@@ -27,6 +30,8 @@ VARS <- c(GMST(), CONCENTRATIONS_CO2(), HEAT_FLUX())
 T_OUTPUT <- file.path(RESULTS_DIR, "tech_note_T_comparison.jpeg")
 CO2_OUTPUT <- file.path(RESULTS_DIR, "tech_note_CO2_comparison.jpeg")
 OHC_OUTPUT <- file.path(RESULTS_DIR, "tech_note_OHC_comparison.jpeg")
+
+
 
 
 source(file.path(SCRIPTS_DIR, "major_functions.R"))
@@ -243,6 +248,16 @@ comb_data <- rbind(obs_data, hector_data)
 
 ### Making plots ###
 
+COLOR_PALETTE <- c("Historical" = "black",
+                   "Hector - Default" = "orange", 
+                   "Hector - MAE" = "skyblue", 
+                   "Hector - MSE" = "blue", 
+                   "Hector - MVSSE" = "#D55E00", 
+                   "Hector - NMAE w/ unc" = "#CC79A7", 
+                   "Hector - NMSE w/ unc"  = "#009E73")
+
+
+
 # Temperature plot
 temp_data <- filter(comb_data, variable == GMST())
 
@@ -255,8 +270,8 @@ ggplot(data = temp_data, aes(x = year, y = value, color = exp)) +
               color = NA,
               alpha = 0.5) +
   # Plotting background runs
-  #geom_line(data = filter(temp_data, exp == "Hector - Other Experiments"),
-  #          aes(group = scenario)) +
+  # geom_line(data = filter(temp_data, exp == "Hector - Other Experiments"),
+  #           aes(group = scenario)) +
   # Plotting foreground runs
   geom_line(data = filter(temp_data, scenario == "historical" & year >= 1850),
             linewidth = 1.25) +
@@ -264,16 +279,24 @@ ggplot(data = temp_data, aes(x = year, y = value, color = exp)) +
                             scenario != "historical"),
             linewidth = 1.5,
             aes(linetype = metric)) +
-  
   # Cleaning up plot
-  scale_color_manual(name = "Experiments",
-                     values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7", "snow4", "black"))  + 
+  scale_color_manual(values = COLOR_PALETTE)  + 
   scale_linetype(guide = "none") + 
-  theme(legend.text = element_text(size = 15), 
-        legend.key.height = unit(2, "cm")) +
-  ylab("Temperature Anomaly (\u00B0C)") +
-  xlab("Year")
-ggsave(T_OUTPUT, width = 12, height = 8)
+  theme(legend.title = element_blank()) -> 
+  plot_w_legend 
+  
+# save the legend
+legend <- as_ggplot(get_legend(plot_w_legend, position = NULL))
+
+ggsave(plot = legend, filename = file.path(RESULTS_DIR, "legend.png"), width = 12, height = 8)
+
+plot_w_legend +  
+  theme(legend.position = "none") +
+  ylab("Global Mean Surface Temperature Anomaly (\u00B0C)") +
+  xlab(NULL) -> 
+  historical_temp; historical_temp
+
+ggsave(plot = historical_temp, filename = T_OUTPUT, width = 12, height = 8)
 
 # CO2 Plot
 co2_data <- filter(comb_data, variable == CONCENTRATIONS_CO2())
@@ -291,21 +314,23 @@ ggplot(data = co2_data, aes(x = year, y = value, color = exp)) +
   geom_point(data = filter(co2_data, scenario == "historical" & year < 1850)) +
   
   # Cleaning up plot
-  scale_color_manual(name = expression(bold("Hector Runs")),
-                     values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7", "snow4", "black"),
-                     labels = c("Default", 
-                                expression("MAE (CO"[2]*" RMSE = 1.97)"),
-                                expression("MSE (CO"[2]*" RMSE = 1.96)"),
-                                expression("MVSSE (CO"[2]*" RMSE = 1.84)"),
-                                expression("NMAE w/ unc (CO"[2]*" RMSE = 2.06)"),
-                                expression("NMSE w/ unc (CO"[2]*" RMSE = 2.93)"),
-                                "\n\n\nObservations\n\n\n")) + 
+  # scale_color_manual(name = expression(bold("Hector Runs")),
+  #                    values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7", "snow4", "black"),
+  #                    labels = c("Default", 
+  #                               expression("MAE (CO"[2]*" RMSE = 1.97)"),
+  #                               expression("MSE (CO"[2]*" RMSE = 1.96)"),
+  #                               expression("MVSSE (CO"[2]*" RMSE = 1.84)"),
+  #                               expression("NMAE w/ unc (CO"[2]*" RMSE = 2.06)"),
+  #                               expression("NMSE w/ unc (CO"[2]*" RMSE = 2.93)"),
+  #                               "\n\n\nObservations\n\n\n")) + 
+scale_color_manual(values = COLOR_PALETTE)  + 
   scale_linetype(guide = F) +
-  theme(legend.text = element_text(size = 18), 
-        legend.key.height = unit(2, "cm")) +
+  theme(legend.position = "none") +
   ylab(expression('CO'[2]*' Concentration (ppmv)')) +
-  xlab("Year")
-ggsave(CO2_OUTPUT, width = 12, height = 8)
+  xlab(NULL) -> 
+  historical_co2
+
+ggsave(plot = historical_co2, filename = CO2_OUTPUT, width = 12, height = 8)
 
 #OHC plot
 ohc_data <- filter(comb_data, variable == "OHC" & year <= 2014)
@@ -328,11 +353,17 @@ ggplot(data = ohc_data, aes(x = year, y = value, color = exp)) +
             ) +
   
   # Cleaning up plot
-  scale_color_manual(name = "Experiments",
-                     values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7",  "snow4", "black")) +
+  scale_color_manual(values = COLOR_PALETTE)  + 
   scale_linetype(guide = "none") +
-  theme(legend.text = element_text(size = 15), 
-        legend.key.height = unit(2, "cm")) +
+  theme(legend.position = "none") +
   ylab(expression('Global Ocean Heat Content Anomaly (ZJ)')) +
-  xlab("Year")
-ggsave(OHC_OUTPUT, width = 12, height = 8)
+  xlab(NULL) -> 
+  historical_ohc
+
+ggsave(plot = historical_ohc, filename = OHC_OUTPUT, width = 12, height = 8)
+
+
+# TODO consider adding the legend as a panel 
+plot <- (historical_co2 |historical_ohc)/ historical_temp
+ggsave(plot = plot, filename = file.path(RESULTS_DIR, "historical_pannel.png"), width = 12, height = 8)
+

@@ -98,15 +98,29 @@ for (scen_counter in 1:length(scenario_files)) {
 }
 
 # Plot results
+
+
+
+COLOR_PALETTE <- c("Historical" = "black",
+                   "Default Parameterization" = "orange", 
+                   "MAE" = "skyblue", 
+                   "MSE" = "blue", 
+                   "MVSSE" = "#D55E00", 
+                   "NMAE w/ unc" = "#CC79A7", 
+                   "NMSE w/ unc"  = "#009E73")
+
+
 ggplot(data = future_results, aes(x = year, y = value, color = run)) + 
   geom_line(linewidth = 1.0) +
   facet_wrap(~ scenario) +
   
   # Cleaning up plot
-  scale_color_manual(name = "",
-                     values = c("orange", "skyblue", "blue", "#009E73", "#CC79A7", "snow4")) + 
-  theme(legend.text = element_text(size = 15), 
-        legend.key.height = unit(2, "cm")) +
+  scale_color_manual(values = COLOR_PALETTE) + 
+  theme(legend.position = "none") +
+  # theme(legend.text = element_text(size = 15), 
+  #       legend.key.height = unit(2, "cm")) +
   ylab("Temperature Anomaly (\u00B0C)") +
-  xlab("Year")
-ggsave(OUTPUT, width = 20, height = 10)
+  xlab("Year") -> 
+  plot 
+
+ggsave(plot = plot, filename = OUTPUT, width = 20, height = 10)
