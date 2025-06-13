@@ -3,7 +3,6 @@
 # Date: 10/12/24
 
 # Importing libraries
-remotes::install_github("jgcri/hector")
 library(hector)
 library(ggplot2)
 theme_set(theme_bw(base_size = 14))
