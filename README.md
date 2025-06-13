@@ -32,9 +32,10 @@ Each experiment can be run using the corresponding script in the experiments sub
 | 14             | alpha        | No                | NMSE w/ unc    | CO2, T, OHC            |
 | 15             | S, alpha     | No                | MAE w/ unc     | CO2, T, OHC            |
 | 16             | S, alpha     | No                | NMAE w/ unc    | CO2, T, OHC            |
-| CO2 only (17A) | S, alpha     | No                | MSE            | CO2                    |
-| T only (17B)   | S, alpha     | No                | MSE w/ unc     | T                      |
-| OHC only (17C) | S, alpha     | No                | MSE w/ unc     | OHC                    |
+| 17             | S, alpha     | No                | MSE w/ unc     | CO2, T, OHC            |
+| CO2 only (18A) | S, alpha     | No                | MSE            | CO2                    |
+| T only (18B)   | S, alpha     | No                | MSE w/ unc     | T                      |
+| OHC only (18C) | S, alpha     | No                | MSE w/ unc     | OHC                    |
 
 Abbreviations Key:
 
@@ -50,4 +51,4 @@ Experiments with tripled parameter ranges were run for experiments 5-11 and 14. 
 
 ## How to Create Figures
 
-The scripts for creating all figures used in the deliverables related to this project can be found in the deliverable_plot_making subdirectory of the scripts directory. All of these figures are output to the deliverable_plots subdirectory of the results directory.
+The scripts for creating all figures used in the deliverables related to this project can be found in the deliverable_plot_making subdirectory of the scripts directory. All of these figures are output to the deliverable_plots subdirectory of the results directory. Note that, for the AGU plots, I included legends in the code to make the temperature and OHC plots but cropped them out on the actual poster.
