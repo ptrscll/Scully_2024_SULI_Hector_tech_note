@@ -12,6 +12,7 @@ mse_tests <- function() {
   assert_that(mse(c(0, 1, 2), c(1, 2, 1)) == 1)
   assert_that(mse(c(0, 1, 2), c(0, 1, -1)) == 3)
   assert_that(mse(c(-2, 1, 2), c(0, 3, 0)) == 4)
+  assert_that(mse(c(-2, 1, 2, NA), c(0, 3, 0, 5)) == 4)
 }
 
 # Trying to use get_var_mse
@@ -72,6 +73,15 @@ mse_unc_tests <- function() {
                       c(NA, 7,  28)) == 9)
 }
 
+
+# Confirming that nmse works as expected
+nmse_tests <- function() {
+  assert_that(nmse(c(0, 1, 2), c(1, 2, 1)) == 3 / 5)
+  assert_that(nmse(c(0, 1, 2), c(0, 1, -1)) == 9 / 5)
+  assert_that(nmse(c(-2, 1, 2), c(0, 3, 0)) == 12 / 9)
+  assert_that(nmse(c(-2, 1, 5, NA), c(0, 3, 0, 5)) == 33 / 30)
+}
+
 # Trying to use nmse_unc
 nmse_unc_tests <- function() {
   assert_that(nmse_unc(10, 15, 5, 10) == 0)
@@ -80,11 +90,11 @@ nmse_unc_tests <- function() {
   assert_that(nmse_unc(c(10, 15, 20),
                        c(15, 20, 25),
                        c(5,  10, 15),
-                       c(10, 7,  28)) == 6 / 725)
+                       c(10, 7,  28)) == 18 / 725)
   assert_that(nmse_unc(c(NA, 15, 20),
                        c(NA, 20, 25),
                        c(NA, 10, 15),
-                       c(10, 7,  28)) == 9 / 625)
+                       c(10, 7,  28)) == 18 / 625)
 }
 
 # Trying to use mvsse
@@ -148,6 +158,7 @@ nmae_unc_tests <- function() {
 mse_tests()
 get_var_mse_tests()
 mse_unc_tests()
+nmse_tests()
 nmse_unc_tests()
 mvsse_tests()
 mae_tests()
