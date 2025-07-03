@@ -250,7 +250,7 @@ nmae_unc <- function(x, x_upper, x_lower, y) {
 # args: 
 #   x  - observed values
 #   sd - standard deviation of observed values
-#        (refferred to as margin of error in manuscript)
+#        (referred to as margin of error in manuscript)
 #   y  - predicted values
 #
 # returns: numeric vector length 1 containing the MVSSE between predicted and
