@@ -185,7 +185,7 @@ nmse_unc_old <- function(x, x_upper, x_lower, y) {
 # returns: numeric vector length 1 containing the NMSE between predicted and
 #          observed values
 nmse <- function(x, y) {
-  SE = mse(x, y) * length(x[!is.na(x)])
+  SE = mse(x, y) * length(x[!is.na(x)])  # Obtain squared error from MSE * N 
   return(SE / sum((x[!is.na(x)])^2))
 }
 
@@ -220,7 +220,7 @@ nmse_unc <- function(x, x_upper, x_lower, y) {
 # returns: numeric vector length 1 containing the NMAE between predicted and
 #          observed values
 nmae <- function(x, y) {
-  AE = mae(x, y) * length(x[!is.na(x)])
+  AE = mae(x, y) * length(x[!is.na(x)])  # Obtain absolute error from MAE * N 
   return(AE / sum(abs(x[!is.na(x)])))
 }
 
@@ -250,6 +250,7 @@ nmae_unc <- function(x, x_upper, x_lower, y) {
 # args: 
 #   x  - observed values
 #   sd - standard deviation of observed values
+#        (refferred to as margin of error in manuscript)
 #   y  - predicted values
 #
 # returns: numeric vector length 1 containing the MVSSE between predicted and
