@@ -68,7 +68,7 @@ for (scen_counter in 1:length(scenario_files)) {
   
   nmse_data <- run_hector(ini_file = scenario_files[scen_counter],
                       params = PARAMS,
-                      vals = c(0.65, 1.76, 1.04, 2.33, 0.438),
+                      vals = c(0.65, 1.76, 1.04, 2.39, 0.439),
                       yrs = future_yrs,
                       vars = future_vars)
   nmse_data$scenario <- paste("ssp", scenarios[scen_counter], sep="")
@@ -119,7 +119,7 @@ ggplot(data = future_results, aes(x = year, y = value, color = run)) +
   theme(legend.position = "none") +
   # theme(legend.text = element_text(size = 15), 
   #       legend.key.height = unit(2, "cm")) +
-  ylab("Temperature Anomaly (\u00B0C)") +
+  ylab("Global Surface Air Temperature Anomaly (\u00B0C)") +
   xlab("Year") -> 
   plot 
 
