@@ -88,7 +88,7 @@ exp8B$scenario <- "Hector - NMSE, Smoothing (k = 10) \nBig Box"
 
 exp9B <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
-                    vals = c(0.028, 1.76, 2.6, 3, 1),
+                    vals = c(0, 1.08, 2.6, 3, 1),
                     yrs = 1750:2014,
                     vars = VARS)
 exp9B$scenario <- "Hector - NMSE w/ unc \nBig Box"
@@ -97,7 +97,7 @@ exp9B$scenario <- "Hector - NMSE w/ unc \nBig Box"
 # Optimizing S, Alpha [Exp. 10-11]
 exp10A <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
-                     vals = c(0.268, 1.95, 2.6, 3.97, 1),
+                     vals = c(0.268, 2.64, 2.4, 3.97, 1),
                      yrs = 1750:2014,
                      vars = VARS)
 exp10A$scenario <- "Hector - NMSE w/ unc \nTuning S"
@@ -111,14 +111,14 @@ exp10B$scenario <- "Hector - NMSE w/ unc \nBig Box, Tuning S"
 
 exp11A <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
-                     vals = c(0.57, 1.76, 2.38, 2.96, 0.492),
+                     vals = c(0.564, 1.76, 2.2, 2.87, 0.487),
                      yrs = 1750:2014,
                      vars = VARS)
 exp11A$scenario <- "Hector - NMSE w/ unc \nTuning S, Alpha"
 
 exp11B <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
-                     vals = c(0.502, 0.99, 2, 2.88, 0.5),
+                     vals = c(0.524, 0.88, 2, 2.94, 0.493),
                      yrs = 1750:2014,
                      vars = VARS)
 exp11B$scenario <- "Hector - NMSE w/ unc \nBig Box, Tuning S, Alpha"
@@ -126,7 +126,7 @@ exp11B$scenario <- "Hector - NMSE w/ unc \nBig Box, Tuning S, Alpha"
 # Optimizing for OHC & Further Refinements [Exp. 12-16]
 exp12 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
-                    vals = c(0.65, 1.76, 1.04, 2.33, 0.438),
+                    vals = c(0.649, 1.76, 1.04, 2.39, 0.439),
                     yrs = 1750:2014,
                     vars = VARS)
 exp12$scenario <- "Hector - NMSE w/ unc"
@@ -140,14 +140,14 @@ exp13$scenario <- "Hector - MVSSE"
 
 exp14A <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
-                     vals = c(0.732, 1.76, 1.04, 3, 0.613),
+                     vals = c(0.732, 1.76, 1.04, 3, 0.581),
                      yrs = 1750:2014,
                      vars = VARS)
 exp14A$scenario <- "Hector - NMSE w/ unc, incl. OHC \nTuning Alpha"
 
 exp14B <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
-                     vals = c(0.904, 0.88, 0.806, 3, 0.46),
+                     vals = c(0.883, 0.88, 0.841, 3, 0.462),
                      yrs = 1750:2014,
                      vars = VARS)
 exp14B$scenario <- "Hector - NMSE w/ unc, incl. OHC \nBig Box, Tuning Alpha"
@@ -182,7 +182,7 @@ exp18$scenario <- "Hector - MSE"
 
 exp19 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
-                    vals = c(0.732, 1.76, 1.042, 2., 0.466),
+                    vals = c(0.732, 1.76, 1.042, 2., 0.388),
                     yrs = 1750:2014,
                     vars = VARS)
 exp19$scenario <- "Hector - NMSE w/o unc"
@@ -196,7 +196,7 @@ exp20$scenario <- "Hector - MSE smoothed"
 
 exp21 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
-                    vals = c(0.732, 1.76, 1.042, 2., 0.458),
+                    vals = c(0.732, 1.76, 1.042, 2., 0.378),
                     yrs = 1750:2014,
                     vars = VARS)
 exp21$scenario <- "Hector - NMSE smoothed"
@@ -247,6 +247,16 @@ comb_data <- rbind(obs_data, hector_data)
 
 ### Making plots ###
 
+# Set up labels - TODO: Reorder things and compare with old plots
+LABELS <- c("Historical" = "Historical",
+            "Hector - Default" = "Hector - Default", 
+            "Hector - MAE" = expression('Hector - E'[2]), 
+            "Hector - MSE" = expression('Hector - E'[1]), 
+            "Hector - MVSSE" = expression('Hector - E'[5]), 
+            "Hector - NMAE w/ unc" = expression('Hector - E'['4, unc']), 
+            "Hector - NMSE w/ unc"  = expression('Hector - E'['3, unc']))
+
+# Setup color palette
 COLOR_PALETTE <- c("Historical" = "black",
                    "Hector - Default" = "orange", 
                    "Hector - MAE" = "skyblue", 
@@ -279,7 +289,7 @@ ggplot(data = temp_data, aes(x = year, y = value, color = exp)) +
             linewidth = 1.5,
             aes(linetype = metric)) +
   # Cleaning up plot
-  scale_color_manual(values = COLOR_PALETTE)  + 
+  scale_color_manual(values = COLOR_PALETTE, labels=LABELS)  + 
   scale_linetype(guide = "none") + 
   theme(legend.title = element_blank()) -> 
   plot_w_legend 
@@ -364,5 +374,5 @@ ggsave(plot = historical_ohc, filename = OHC_OUTPUT, width = 12, height = 8)
 
 # TODO consider adding the legend as a panel 
 plot <- (historical_co2 |historical_ohc)/ historical_temp
-ggsave(plot = plot, filename = file.path(RESULTS_DIR, "historical_pannel.png"), width = 12, height = 8)
+ggsave(plot = plot, filename = file.path(RESULTS_DIR, "historical_panel.png"), width = 12, height = 8)
 
