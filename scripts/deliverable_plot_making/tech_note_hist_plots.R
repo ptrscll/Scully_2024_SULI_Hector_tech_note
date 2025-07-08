@@ -129,14 +129,14 @@ exp12 <- run_hector(ini_file = INI_FILE,
                     vals = c(0.649, 1.76, 1.04, 2.39, 0.439),
                     yrs = 1750:2014,
                     vars = VARS)
-exp12$scenario <- "Hector - NMSE w/ unc"
+exp12$scenario <- "Hector - E3"
 
 exp13 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
                     vals = c(0.53, 2.31, 1.04, 2.83, 1.405),
                     yrs = 1750:2014,
                     vars = VARS)
-exp13$scenario <- "Hector - MVSSE"
+exp13$scenario <- "Hector - E5"
 
 exp14A <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
@@ -164,7 +164,7 @@ exp16 <- run_hector(ini_file = INI_FILE,
                     vals = c(0.59, 1.76, 1.04, 2.17, 0.411),
                     yrs = 1750:2014,
                     vars = VARS)
-exp16$scenario <- "Hector - NMAE w/ unc"
+exp16$scenario <- "Hector - E4"
 
 exp17 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
@@ -178,7 +178,7 @@ exp18 <- run_hector(ini_file = INI_FILE,
                     vals = c(0.55, 1.81, 1.19, 2.31, 0.928),
                     yrs = 1750:2014,
                     vars = VARS)
-exp18$scenario <- "Hector - MSE"
+exp18$scenario <- "Hector - E1"
 
 exp19 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
@@ -206,7 +206,7 @@ exp22 <- run_hector(ini_file = INI_FILE,
                     vals = c(0.56, 1.76, 1.04, 2.35, 0.865),
                     yrs = 1750:2014,
                     vars = VARS)
-exp22$scenario <- "Hector - MAE"
+exp22$scenario <- "Hector - E2"
 
 
 # Coloring all unimportant runs grey
@@ -241,29 +241,29 @@ hector_data <- filter(hector_data, variable == CONCENTRATIONS_CO2() |
                         (year >= 1850 & variable == GMST()) |
                         variable == "OHC")
 
-obs_data$exp <- "Historical"
+obs_data$exp <- "0 - Historical"
 obs_data$metric <- "0"
 comb_data <- rbind(obs_data, hector_data)
 
 ### Making plots ###
 
 # Set up labels - TODO: Reorder things and compare with old plots
-LABELS <- c("Historical" = "Historical",
+LABELS <- c("0 - Historical" = "Historical",
             "Hector - Default" = "Hector - Default", 
-            "Hector - MAE" = expression('Hector - E'[2]), 
-            "Hector - MSE" = expression('Hector - E'[1]), 
-            "Hector - MVSSE" = expression('Hector - E'[5]), 
-            "Hector - NMAE w/ unc" = expression('Hector - E'['4, unc']), 
-            "Hector - NMSE w/ unc"  = expression('Hector - E'['3, unc']))
+            "Hector - E1" = expression('Hector - E'[1]), 
+            "Hector - E2" = expression('Hector - E'[2]), 
+            "Hector - E3"  = expression('Hector - E'['3, unc']),
+            "Hector - E4" = expression('Hector - E'['4, unc']), 
+            "Hector - E5" = expression('Hector - E'[5]))
 
 # Setup color palette
-COLOR_PALETTE <- c("Historical" = "black",
+COLOR_PALETTE <- c("0 - Historical" = "black",
                    "Hector - Default" = "orange", 
-                   "Hector - MAE" = "skyblue", 
-                   "Hector - MSE" = "blue", 
-                   "Hector - MVSSE" = "#D55E00", 
-                   "Hector - NMAE w/ unc" = "#CC79A7", 
-                   "Hector - NMSE w/ unc"  = "#009E73")
+                   "Hector - E2" = "skyblue", 
+                   "Hector - E1" = "blue", 
+                   "Hector - E5" = "#D55E00", 
+                   "Hector - E4" = "#CC79A7", 
+                   "Hector - E3"  = "#009E73")
 
 
 
