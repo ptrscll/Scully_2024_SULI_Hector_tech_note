@@ -1,6 +1,6 @@
 # hector-calibration-summer-2024
 
-Code and data related to historical calibration experiments by Hector's 2024 SULI.
+Code and data related to historical calibration experiments of Hector from Summer 2024
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12775301.svg)](https://doi.org/10.5281/zenodo.12775301)
 
@@ -33,19 +33,24 @@ Each experiment can be run using the corresponding script in the experiments sub
 | 15             | S, alpha     | No                | MAE w/ unc     | CO2, T, OHC            |
 | 16             | S, alpha     | No                | NMAE w/ unc    | CO2, T, OHC            |
 | 17             | S, alpha     | No                | MSE w/ unc     | CO2, T, OHC            |
-| CO2 only (18A) | S, alpha     | No                | MSE            | CO2                    |
-| T only (18B)   | S, alpha     | No                | MSE w/ unc     | T                      |
-| OHC only (18C) | S, alpha     | No                | MSE w/ unc     | OHC                    |
+| 18             | S, alpha     | No                | MSE            | CO2, T, OHC            |
+| 19             | S, alpha     | No                | NMSE           | CO2, T, OHC            |
+| 20             | S, alpha     | Yes               | MSE            | CO2, T, OHC            |
+| 21             | S, alpha     | Yes               | NMSE           | CO2, T, OHC            |
+| 22             | S, alpha     | No                | MAE            | CO2, T, OHC            |
+| CO2 only       | S, alpha     | No                | MSE            | CO2                    |
+| T only         | S, alpha     | No                | MSE w/ unc     | T                      |
+| OHC only       | S, alpha     | No                | MSE w/ unc     | OHC                    |
 
 Abbreviations Key:
 
 -   OHC = Ocean Heat Content
--   MSE = Mean Squared Error
--   NMSE = Normalized Mean Squared Error
+-   MSE = Mean Squared Error ($E_1$)
+-   NMSE = Normalized Mean Squared Error ($E_3$)
 -   w/ unc = accounting for uncertainty (see manuscript for more details)
--   MVSSE = Mean Variance-Standardized Squared Error
--   MAE = Mean Absolute Error
--   NMAE = Normalized Mean Absolute Error
+-   MVSSE = Mean Variance-Standardized Squared Error ($E_5$)
+-   MAE = Mean Absolute Error ($E_2$)
+-   NMAE = Normalized Mean Absolute Error ($E_4$)
 
 Experiments with tripled parameter ranges were run for experiments 5-11 and 14. For how to run these experiments, see the scripts directory README. For how to change k for the smoothing experiments, see the scripts for those specific experiments. Note that experiment 7 was never run because, after running experiments 6 and 8, it seemed unnecessary and highly unlikely to produce any useful results.
 
