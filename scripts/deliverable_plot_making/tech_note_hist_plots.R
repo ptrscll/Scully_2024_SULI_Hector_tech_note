@@ -247,7 +247,7 @@ comb_data <- rbind(obs_data, hector_data)
 
 ### Making plots ###
 
-# Set up labels - TODO: Reorder things and compare with old plots
+# Set up labels
 LABELS <- c("0 - Historical" = "Historical",
             "Hector - Default" = "Hector - Default", 
             "Hector - E1" = expression('Hector - E'[1]), 
