@@ -32,7 +32,7 @@ OHC_PATH <- file.path(COMP_DATA_DIR, "OHC_ensemble_Kuhlbrodt_etal_2022.csv")
 INI_FILE <- system.file("input/hector_ssp245.ini", package = "hector")
 PARAMS <- c(BETA(), Q10_RH(), DIFFUSIVITY(), ECS(), AERO_SCALE())
 
-OUTPUT <- file.path(RESULTS_DIR, "21_alpha_ecs_ohc_unc_nmse_smoothed.txt")
+OUTPUT <- file.path(RESULTS_DIR, "21_alpha_ecs_ohc_nmse_smoothed.txt")
 
 
 source(file.path(SCRIPTS_DIR, "major_functions.R"))

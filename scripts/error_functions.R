@@ -143,8 +143,40 @@ mae_unc <- function(x_upper, x_lower, y, x = NULL) {
 }
 
 
+# nmse_old - function to find normalized mean squared error between two vectors
+#            (uses incorrect formula for NMSE: MSE / sum(x^2))
+#
+# args: 
+#   x - observed values
+#   y - predicted values
+#
+# returns: numeric vector length 1 containing the NMSE between predicted and
+#          observed values
+nmse_old <- function(x, y) {
+  return(mse(x, y) / sum((x[!is.na(x)])^2))
+}
+
+# nmse_unc_old - function to find normalized mean squared error between two
+#                vectors while counting anything within the given confidence
+#                having an SE of 0
+#                (uses incorrect formula for NMSE: MSE / sum(x^2))
+#
+# args: 
+#   x       - observed values
+#   x_upper - upper bound on observed values
+#   x_lower - lower bound on observed values
+#   y       - predicted values
+#
+# returns: numeric vector length 1 containing the NMSE between predicted and
+#          observed values
+nmse_unc_old <- function(x, x_upper, x_lower, y) {
+  return(mse_unc(x_upper = x_upper, x_lower = x_lower, y = y) / 
+           sum((x[!is.na(x)])^2))
+}
+
+
 # nmse - function to find normalized mean squared error between two vectors
-#        (NMSE = MSE / x^2)
+#        (NMSE = sum(SE) / sum(x^2))
 #
 # args: 
 #   x - observed values
@@ -153,13 +185,15 @@ mae_unc <- function(x_upper, x_lower, y, x = NULL) {
 # returns: numeric vector length 1 containing the NMSE between predicted and
 #          observed values
 nmse <- function(x, y) {
-  return(mse(x, y) / sum((x[!is.na(x)])^2))
+  SE = mse(x, y) * length(x[!is.na(x)])  # Obtain squared error from MSE * N 
+  return(SE / sum((x[!is.na(x)])^2))
 }
+
 
 # nmse_unc - function to find normalized mean squared error between two vectors
 #            while counting anything within the given confidence interval as
 #            having an SE of 0
-#            (NMSE = MSE / x^2)
+#            (NMAE = sum(SE) / sum(x^2))
 #
 # args: 
 #   x       - observed values
@@ -170,9 +204,11 @@ nmse <- function(x, y) {
 # returns: numeric vector length 1 containing the NMSE between predicted and
 #          observed values
 nmse_unc <- function(x, x_upper, x_lower, y) {
-  return(mse_unc(x_upper = x_upper, x_lower = x_lower, y = y) / 
-           sum((x[!is.na(x)])^2))
+  SE = mse_unc(x_upper = x_upper, x_lower = x_lower, y = y) * 
+    length(x[!is.na(x)])
+  return(SE / sum((x[!is.na(x)])^2))
 }
+
 
 # nmae - function to find normalized mean absolute error between two vectors
 #        (NMAE = sum(AE) / sum(|x|))
@@ -184,14 +220,15 @@ nmse_unc <- function(x, x_upper, x_lower, y) {
 # returns: numeric vector length 1 containing the NMAE between predicted and
 #          observed values
 nmae <- function(x, y) {
-  AE = mae(x, y) * length(x[!is.na(x)])
+  AE = mae(x, y) * length(x[!is.na(x)])  # Obtain absolute error from MAE * N 
   return(AE / sum(abs(x[!is.na(x)])))
 }
+
 
 # nmae_unc - function to find normalized mean absolute error between two vectors
 #            while counting anything within the given confidence interval as
 #            having an AE of 0
-#            (NMAE = sum(MAE) / sum(|x|))
+#            (NMAE = sum(AE) / sum(|x|))
 #
 # args: 
 #   x       - observed values
@@ -213,9 +250,10 @@ nmae_unc <- function(x, x_upper, x_lower, y) {
 # args: 
 #   x  - observed values
 #   sd - standard deviation of observed values
+#        (referred to as margin of error in manuscript)
 #   y  - predicted values
 #
-# returns: numeric vector length 1 containing the NMSE between predicted and
+# returns: numeric vector length 1 containing the MVSSE between predicted and
 #          observed values
 mvsse <- function(x, sd, y) {
   vsse <- (x - y)^2 / (sd)^2
@@ -249,7 +287,7 @@ get_var_mse <- function(obs_data, hector_data, var, yrs, mse_fn = mse) {
 }
 
 
-# get_var_mse_unc: function to find NMSE between observed and predicted data
+# get_var_mse_unc: function to find MSE between observed and predicted data
 #                  for a given variable while accounting for uncertainty in
 #                  observations
 #

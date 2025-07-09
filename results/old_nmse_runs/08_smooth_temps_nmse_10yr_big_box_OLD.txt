@@ -1,17 +1,17 @@
 parameters	values
 beta	0
-q10_rh	1.94564980909448
+q10_rh	1.95459711198892
 diff	2.6
 
-Objective Function Value: 0.0345
-Counts: 18
-Counts: 18
+Objective Function Value: 0.000213
+Counts: 19
+Counts: 19
 Convergence:  0
 Messages: CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH
 
-CO2 MSE: 1010
+CO2 MSE: 1020
 T MSE:   0.0143
-RMSE:    31.8
+RMSE:    31.9
 
 ***Key Metrics***
 TCRE: 1.73
@@ -29,7 +29,7 @@ scenario	start	end	GSAT
 ssp119	2021	2040	0.907
 ssp119	2041	2060	1.24
 ssp119	2081	2100	1.29
-ssp126	2021	2040	0.919
+ssp126	2021	2040	0.92
 ssp126	2041	2060	1.42
 ssp126	2081	2100	1.72
 ssp245	2021	2040	0.922

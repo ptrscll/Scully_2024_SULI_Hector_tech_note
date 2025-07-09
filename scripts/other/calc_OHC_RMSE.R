@@ -68,7 +68,7 @@ exp8B$scenario <- "Hector - NMSE, Smoothing (k = 10) \nBig Box"
 
 exp9B <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
-                    vals = c(0.028, 1.76, 2.6, 3, 1),
+                    vals = c(0.0, 1.08, 2.6, 3, 1),
                     yrs = 1750:2014,
                     vars = HEAT_FLUX())
 exp9B$scenario <- "Hector - NMSE w/ unc \nBig Box"
@@ -77,7 +77,7 @@ exp9B$scenario <- "Hector - NMSE w/ unc \nBig Box"
 # Optimizing S, Alpha [Exp. 10-11]
 exp10A <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
-                     vals = c(0.268, 1.95, 2.6, 3.97, 1),
+                     vals = c(0.268, 2.64, 2.4, 3.97, 1),
                      yrs = 1750:2014,
                      vars = HEAT_FLUX())
 exp10A$scenario <- "Hector - NMSE w/ unc \nTuning S"
@@ -91,14 +91,14 @@ exp10B$scenario <- "Hector - NMSE w/ unc \nBig Box, Tuning S"
 
 exp11A <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
-                     vals = c(0.57, 1.76, 2.38, 2.96, 0.492),
+                     vals = c(0.564, 1.76, 2.2, 2.87, 0.487),
                      yrs = 1750:2014,
                      vars = HEAT_FLUX())
 exp11A$scenario <- "Hector - NMSE w/ unc \nTuning S, Alpha"
 
 exp11B <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
-                     vals = c(0.502, 0.99, 2, 2.88, 0.5),
+                     vals = c(0.524, 0.88, 2, 2.94, 0.493),
                      yrs = 1750:2014,
                      vars = HEAT_FLUX())
 exp11B$scenario <- "Hector - NMSE w/ unc \nBig Box, Tuning S, Alpha"
@@ -106,7 +106,7 @@ exp11B$scenario <- "Hector - NMSE w/ unc \nBig Box, Tuning S, Alpha"
 # Optimizing for OHC & Further Refinements [Exp. 12-16]
 exp12 <- run_hector(ini_file = INI_FILE,
                     params = PARAMS,
-                    vals = c(0.65, 1.76, 1.04, 2.33, 0.438),
+                    vals = c(0.649, 1.76, 1.04, 2.39, 0.439),
                     yrs = 1750:2014,
                     vars = HEAT_FLUX())
 exp12$scenario <- "Hector - NMSE w/ unc, incl. OHC \nTuning S, Alpha"
@@ -120,14 +120,14 @@ exp13$scenario <- "Hector - MVSSE, incl. OHC \nTuning S, Alpha"
 
 exp14A <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
-                     vals = c(0.732, 1.76, 1.04, 3, 0.613),
+                     vals = c(0.732, 1.76, 1.04, 3, 0.581),
                      yrs = 1750:2014,
                      vars = HEAT_FLUX())
 exp14A$scenario <- "Hector - NMSE w/ unc, incl. OHC \nTuning Alpha"
 
 exp14B <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
-                     vals = c(0.904, 0.88, 0.806, 3, 0.46),
+                     vals = c(0.883, 0.88, 0.841, 3, 0.462),
                      yrs = 1750:2014,
                      vars = HEAT_FLUX())
 exp14B$scenario <- "Hector - NMSE w/ unc, incl. OHC \nBig Box, Tuning Alpha"
@@ -165,21 +165,21 @@ co2_only <- run_hector(ini_file = INI_FILE,
                        vals = c(0.35, 2.51, 1.14, 4.29, 2.63),
                        yrs = 1750:2014,
                        vars = HEAT_FLUX())
-co2_only$scenaro <- "Hector - otpimized for only CO2"
+co2_only$scenario <- "Hector - optimized for only CO2"
 
 T_only <- run_hector(ini_file = INI_FILE,
                        params = PARAMS,
                        vals = c(0.65, 1.76, 1.04, 2.50, 0.44),
                        yrs = 1750:2014,
                        vars = HEAT_FLUX())
-T_only$scenaro <- "Hector - otpimized for only T"
+T_only$scenario <- "Hector - optimized for only T"
 
 OHC_only <- run_hector(ini_file = INI_FILE,
                      params = PARAMS,
                      vals = c(0.54, 1.76, 1.27, 2.96, 1.08),
                      yrs = 1750:2014,
                      vars = HEAT_FLUX())
-OHC_only$scenaro <- "Hector - otpimized for only OHC"
+OHC_only$scenario <- "Hector - optimized for only OHC"
 
 # Calculating OHC RMSE
 all_exp <- list(default_data, 
@@ -195,10 +195,22 @@ all_exp <- list(default_data,
 
 # TODO: clean up this output sorry
 
+scenarios <- sapply(all_exp, (function (x) x$scenario[1]))
+
 # MSE w/ unc
-sapply(all_exp, get_var_mse_unc, 
-       obs_data = obs_data, var = "OHC", yrs = 1957:2014, mse_fn = mse_unc)
+mse_unc <- sapply(all_exp, get_var_mse_unc, 
+                  obs_data = obs_data, 
+                  var = "OHC", 
+                  yrs = 1957:2014, 
+                  mse_fn = mse_unc)
 
 # MSE w/o unc
-sapply(all_exp, get_var_mse,
-       obs_data = obs_data, var = "OHC", yrs = 1957:2014, mse_fn = mse)
+mse <- sapply(all_exp, get_var_mse,
+              obs_data = obs_data, var = "OHC", yrs = 1957:2014, mse_fn = mse)
+
+rmse_unc <- sqrt(mse_unc)
+rmse <- sqrt(mse)
+
+# Output as dataframe
+output <- data.frame(scenarios, mse_unc, mse, rmse_unc, rmse)
+output

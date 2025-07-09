@@ -2,11 +2,11 @@ parameters	values
 beta	0.268
 q10_rh	2.64
 diff	2.4
-S	3.97213955277401
+S	3.97216492744402
 
-Objective Function Value: 0.0228
-Counts: 18
-Counts: 18
+Objective Function Value: 0.000138
+Counts: 19
+Counts: 19
 Convergence:  0
 Messages: CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH
 

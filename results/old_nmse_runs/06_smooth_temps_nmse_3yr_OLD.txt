@@ -3,9 +3,9 @@ beta	0.268
 q10_rh	2.64
 diff	2.2
 
-Objective Function Value: 0.0933
-Counts: 5
-Counts: 5
+Objective Function Value: 0.00046
+Counts: 11
+Counts: 11
 Convergence:  0
 Messages: CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL
 
