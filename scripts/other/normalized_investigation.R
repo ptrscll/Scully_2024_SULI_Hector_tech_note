@@ -63,4 +63,32 @@ ohc_nmse <- get_var_mse_unc(obs_data=ohc_data,
                           var = "OHC", 
                           yrs = c(1957:2014),
                           mse_fn = nmse_unc)
+
 print(co2_nmse)
+print(T_nmse)
+print(ohc_nmse)
+print((co2_nmse + T_nmse + ohc_nmse) / 3)
+
+
+co2_nmae <- get_var_mse(obs_data=co2_data,
+                        hector_data=nmse_run,
+                        var = CONCENTRATIONS_CO2(), 
+                        yrs = c(1750, 1850:2014),
+                        mse_fn = nmae)
+
+T_nmae <- get_var_mse_unc(obs_data=T_data,
+                          hector_data=nmse_run,
+                          var = GMST(), 
+                          yrs = c(1850:2014),
+                          mse_fn = nmae_unc)
+
+ohc_nmae <- get_var_mse_unc(obs_data=ohc_data,
+                            hector_data=nmse_run,
+                            var = "OHC", 
+                            yrs = c(1957:2014),
+                            mse_fn = nmae_unc)
+
+print(co2_nmae)
+print(T_nmae)
+print(ohc_nmae)
+print((co2_nmae + T_nmae + ohc_nmae) / 3)
