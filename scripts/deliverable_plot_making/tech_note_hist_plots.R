@@ -302,7 +302,7 @@ ggsave(plot = legend, filename = file.path(RESULTS_DIR, "legend.png"), width = 1
 plot_w_legend +  
   theme(legend.position = "none") +
   ylab("Global Mean Surface Temperature Anomaly (\u00B0C)") +
-  xlab(NULL) -> 
+  xlab("Year") -> 
   historical_temp; historical_temp
 
 ggsave(plot = historical_temp, filename = T_OUTPUT, width = 12, height = 8)
@@ -336,7 +336,7 @@ scale_color_manual(values = COLOR_PALETTE)  +
   scale_linetype(guide = F) +
   theme(legend.position = "none") +
   ylab(expression('CO'[2]*' Concentration (ppmv)')) +
-  xlab(NULL) -> 
+  xlab("Year") -> 
   historical_co2
 
 ggsave(plot = historical_co2, filename = CO2_OUTPUT, width = 12, height = 8)
@@ -366,7 +366,7 @@ ggplot(data = ohc_data, aes(x = year, y = value, color = exp)) +
   scale_linetype(guide = "none") +
   theme(legend.position = "none") +
   ylab(expression('Global Ocean Heat Content Anomaly (ZJ)')) +
-  xlab(NULL) -> 
+  xlab("Year") -> 
   historical_ohc
 
 ggsave(plot = historical_ohc, filename = OHC_OUTPUT, width = 12, height = 8)
